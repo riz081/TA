@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Live Camera Feed</title>
+    <style>
+        .camera{
+            text-align: center;
+            background-image: url(static/pxfuel1.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="camera">
+    <h1>Live Camera Rehabilitasi</h1>
+    <img src="{{ url_for('video_feed') }}" width="640" height="480">
+    </div>
+    <!-- <button id="Enter" type="button" onclick="/camera" class="button">Enter</button> -->
+    </div>
+  </body>
+</html>
