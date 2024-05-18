@@ -1,22 +1,27 @@
-import math
 import cv2
-import cvzone
 from cvzone.HandTrackingModule import HandDetector
+import math
 import numpy as np
+import cvzone
 import time
 
-# Initialize the camera
-cap = cv2.VideoCapture(1)  # Try changing this to 0 or other indices if you have multiple cameras
+# Webcam
+cap = cv2.VideoCapture(1)
 cap.set(3, 1280)  # Set width
-cap.set(4, 720)  # Set height
+cap.set(4, 720)   # Set height
 
-# Initialize the hand detector
-detector = HandDetector(detectionCon=0.8, maxHands=1)
+if not cap.isOpened():
+    print("Error: Could not open camera.")
+    exit()
 
-# Polynomial coefficients for distance calculation
+# Hand Detector
+detector = HandDetector(detectionCon=0.8, maxHands=2)
+
+# Find Function
+# x is the raw distance, y is the value in cm
 x = [300, 245, 200, 170, 145, 130, 112, 103, 93, 87, 80, 75, 70, 67, 62, 59, 57]
 y = [20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
-coff = np.polyfit(x, y, 2)
+coff = np.polyfit(x, y, 2)  # y = Ax^2 + Bx + C
 
 # Settings
 offset = 20
@@ -26,7 +31,7 @@ counter = 0
 
 while True:
     success, img = cap.read()
-    if not success:
+    if not success or img is None:
         print("Failed to capture image")
         continue
 
@@ -34,12 +39,13 @@ while True:
     if hands:
         hand = hands[0]
 
-        # Check if 'lmlist' and 'bbox' keys exist in the hand dictionary
-        if 'lmlist' in hand and 'bbox' in hand:
-            lmlist = hand['lmlist']
+        if 'lmList' in hand and 'bbox' in hand:
+            lmList = hand['lmList']
             x, y, w, h = hand['bbox']
-            x1, y1 = lmlist[5]
-            x2, y2 = lmlist[17]
+            
+            # Extract x, y coordinates only
+            x1, y1 = lmList[5][:2]
+            x2, y2 = lmList[17][:2]
 
             # Calculate the primary distance (between landmarks 5 and 17)
             distance = int(math.sqrt((y2 - y1) ** 2 + (x2 - x1) ** 2))
@@ -50,8 +56,8 @@ while True:
             print(f'Primary Distance: {distanceCM} cm')
 
             # Calculate the secondary distance (between thumb tip and index finger tip)
-            x3, y3 = lmlist[4]
-            x4, y4 = lmlist[8]
+            x3, y3 = lmList[4][:2]
+            x4, y4 = lmList[8][:2]
             secondary_distance = int(math.sqrt((y4 - y3) ** 2 + (x4 - x3) ** 2))
             secondary_distanceCM = A * secondary_distance ** 2 + B * secondary_distance + C
 
@@ -101,7 +107,7 @@ while True:
         counter += 1
         cv2.imwrite(f'{folder}/Image_{time.time()}.jpg', imgWhite)
         print(counter)
-        print(lmlist)
+        print(lmList)
 
 cap.release()
 cv2.destroyAllWindows()
