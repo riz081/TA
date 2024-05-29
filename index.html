@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Development Environment</title>
+    <style>
+      /* Tambahkan CSS Anda di sini untuk menyesuaikan tampilan */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #333;
+        color: #fff;
+      }
+      .container {
+        display: flex;
+        justify-content: space-between;
+      }
+      .left-panel,
+      .right-panel {
+        width: 20%;
+        padding: 10px;
+        background-color: #222;
+      }
+      .center-panel {
+        width: 60%;
+        padding: 10px;
+      }
+      .request-inputs {
+        margin-bottom: 20px;
+      }
+      .response {
+        background-color: #1a1a1a;
+        padding: 10px;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="left-panel">
+        <!-- Tambahkan konten panel kiri seperti History dan Collections di sini -->
+      </div>
+      <div class="center-panel">
+        <!-- Bagian untuk URL dan metode request -->
+        <div class="request-inputs">
+          <input type="text" id="url" placeholder="Request URL" />
+          <button type="button" id="send">Send</button>
+        </div>
+        <!-- Bagian untuk tab Headers, Authorization, Body -->
+        <!-- Tambahkan konten respons di sini -->
+        <div class="response">
+          <pre id="json-response">{}</pre>
+        </div>
+      </div>
+      <div class="right-panel">
+        <!-- Tambahkan konten panel kanan seperti status code dan response time di sini -->
+      </div>
+    </div>
+    <script>
+      // Tambahkan JavaScript Anda di sini untuk menangani request dan menampilkan respons
+    </script>
+  </body>
+</html>
